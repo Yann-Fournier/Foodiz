@@ -1,2 +1,4 @@
 .claude
-Data/
+Data/*
+Models/*
+__pycache__/
