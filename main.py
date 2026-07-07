@@ -221,13 +221,13 @@ def page_overview(collection):
             color_discrete_map=GRADE_COLORS, title="Distribution du Nutri-Score",
         )
         fig.update_layout(showlegend=False)
-        col1.plotly_chart(fig, use_container_width=True)
+        col1.plotly_chart(fig, width='stretch')
 
     nova_df = pd.DataFrame(stats["nova_counts"])
     if not nova_df.empty:
         nova_df = nova_df.rename(columns={"_id": "nova"}).sort_values("nova")
         fig = px.bar(nova_df, x="nova", y="count", title="Distribution du groupe NOVA")
-        col2.plotly_chart(fig, use_container_width=True)
+        col2.plotly_chart(fig, width='stretch')
 
     cat_df = pd.DataFrame(stats["category_counts"]).rename(columns={"_id": "categorie"})
     if not cat_df.empty:
@@ -235,7 +235,7 @@ def page_overview(collection):
             cat_df.sort_values("count"), x="count", y="categorie", orientation="h",
             title="Top 15 categories de produits",
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
     regime_df = pd.DataFrame([
         {"regime": k.replace("is_", "").replace("_", " ").title(), "count": v}
@@ -245,7 +245,7 @@ def page_overview(collection):
         regime_df.sort_values("count"), x="count", y="regime", orientation="h",
         title="Nombre de produits par regime",
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 
 def page_explorer(collection):
@@ -270,7 +270,7 @@ def page_explorer(collection):
         "Nutri-Score": ((r.get("quality", {}) or {}).get("nutriscore_grade") or "?").upper(),
         "Energie (kcal/100g)": (r.get("nutrition", {}) or {}).get("energy_kcal"),
     } for r in results])
-    st.dataframe(table, hide_index=True, use_container_width=True)
+    st.dataframe(table, hide_index=True, width='stretch')
 
     names = [r.get("product_name", "N/A") for r in results]
     selected_name = st.selectbox("Voir le detail d'un produit", names)
@@ -323,7 +323,7 @@ def page_predict(collection, models):
                     "Reel": "Oui" if regime_reel.get(r["label"]) else "Non",
                     "Coherent": "Oui" if r["compatible"] == bool(regime_reel.get(r["label"])) else "Non",
                 } for r in results])
-                st.dataframe(comp_df, hide_index=True, use_container_width=True)
+                st.dataframe(comp_df, hide_index=True, width='stretch')
 
     else:
         with st.form("manual_form"):
@@ -402,7 +402,7 @@ def page_alternatives(collection, models):
         if alternatives.empty:
             st.warning("Aucune alternative trouvee avec ces criteres.")
         else:
-            st.dataframe(alternatives, hide_index=True, use_container_width=True)
+            st.dataframe(alternatives, hide_index=True, width='stretch')
 
 
 # ---------------------------------------------------------------------------
